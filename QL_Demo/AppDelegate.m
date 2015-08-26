@@ -9,15 +9,17 @@
 #import "AppDelegate.h"
 #import <QuickLook/QuickLook.h>
 #import <Quartz/Quartz.h>
+#import "RowItem.h"
+
+static void *DownloadKVOContext = &DownloadKVOContext;
 
 @interface AppDelegate ()<NSTableViewDelegate, NSTableViewDataSource>
 {
     NSMutableArray *array;
-    NSURL *preview_image_url;
+    RowItem *preview_item;
 }
 @property (weak) IBOutlet NSTableView *table;
 @property (strong) QLPreviewPanel *previewPanel;
-
 @property (weak) IBOutlet NSWindow *window;
 @end
 
@@ -27,7 +29,9 @@
 
 - (void)addLink:(NSString*)link
 {
-    [array addObject:[NSURL URLWithString:link]];
+    RowItem *item = [[RowItem alloc] init];
+    item.remoteURL = [NSURL URLWithString:link];
+    [array addObject:item];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -67,12 +71,16 @@
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    return array[row];
+    RowItem *item = array[row];
+    return item.remoteURL;
 }
 
 -(void)tableViewSelectionDidChange:(NSNotification *)notification {
     if ([_table selectedRow]!=NSNotFound) {
-        preview_image_url =array[[_table selectedRow]];
+        if (preview_item) {
+            [preview_item cancelDownload];
+        }
+        preview_item = array[[_table selectedRow]];
         [self.previewPanel reloadData];
     }
 }
@@ -115,9 +123,15 @@
 
 - (id <QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index
 {
-    return preview_image_url;
+    if (!preview_item.gotImage){
+        if (!preview_item.downloading) {
+            preview_item.downloading = YES;
+            [preview_item addObserver:self forKeyPath:@"gotImage" options:0 context:DownloadKVOContext];
+            [preview_item startDownload];
+        }
+    }
+    return preview_item;
 }
-
 
 #pragma mark - QLPreviewPanelDelegate
 
@@ -135,9 +149,7 @@
 // This delegate method provides the rect on screen from which the panel will zoom.
 - (NSRect)previewPanel:(QLPreviewPanel *)panel sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item
 {
-    NSInteger index = [array indexOfObject:preview_image_url];
-    NSLog(@"%@", item);
-    NSLog(@"%lu", index);
+    NSInteger index = [array indexOfObject:preview_item];
     if (index == NSNotFound)
     {
         return NSZeroRect;
@@ -164,11 +176,38 @@
 //
 - (id)previewPanel:(QLPreviewPanel *)panel transitionImageForPreviewItem:(id <QLPreviewItem>)item contentRect:(NSRect *)contentRect
 {
-//    DownloadItem *downloadItem = (DownloadItem *)item;
-    
-    return [NSImage imageNamed:@"aaa.png"];
+    return nil;
 }
 
+#pragma mark - 
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+    if (context == DownloadKVOContext) {
+        RowItem *item = (RowItem *)object;
+
+        if (item.gotImage) {
+            if (preview_item == item) {
+                NSLog(@"gotImage ok reload");
+                [self.previewPanel reloadData];
+            }
+            else{
+                NSLog(@"gotImage ok not reload");
+            }
+        }
+        else{
+            NSLog(@"gotImage failed");
+        }
+
+        @try {
+            [item removeObserver:self forKeyPath:@"gotImage"];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
+
+    }
+}
 
 @end

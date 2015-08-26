@@ -13,6 +13,7 @@
 		352733A81B8B29360078C747 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 352733A61B8B29360078C747 /* MainMenu.xib */; };
 		352733B41B8B29360078C747 /* QL_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 352733B31B8B29360078C747 /* QL_DemoTests.m */; };
 		352733C71B8C4E2D0078C747 /* CustomTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 352733C61B8C4E2D0078C747 /* CustomTableView.m */; };
+		A70712801B8D6BEA00F9B927 /* RowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A707127F1B8D6BEA00F9B927 /* RowItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,8 @@
 		352733B31B8B29360078C747 /* QL_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QL_DemoTests.m; sourceTree = "<group>"; };
 		352733C51B8C4E2D0078C747 /* CustomTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableView.h; sourceTree = "<group>"; };
 		352733C61B8C4E2D0078C747 /* CustomTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableView.m; sourceTree = "<group>"; };
+		A707127E1B8D6BEA00F9B927 /* RowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowItem.h; sourceTree = "<group>"; };
+		A707127F1B8D6BEA00F9B927 /* RowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RowItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +82,8 @@
 		3527339C1B8B29360078C747 /* QL_Demo */ = {
 			isa = PBXGroup;
 			children = (
+				A707127E1B8D6BEA00F9B927 /* RowItem.h */,
+				A707127F1B8D6BEA00F9B927 /* RowItem.m */,
 				3527339F1B8B29360078C747 /* AppDelegate.h */,
 				352733A01B8B29360078C747 /* AppDelegate.m */,
 				352733C51B8C4E2D0078C747 /* CustomTableView.h */,
@@ -218,6 +223,7 @@
 				352733A31B8B29360078C747 /* main.m in Sources */,
 				352733A11B8B29360078C747 /* AppDelegate.m in Sources */,
 				352733C71B8C4E2D0078C747 /* CustomTableView.m in Sources */,
+				A70712801B8D6BEA00F9B927 /* RowItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
