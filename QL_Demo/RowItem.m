@@ -61,8 +61,8 @@
     BOOL saveOK = [imagedata writeToFile:path atomically:YES];
     if (saveOK) {
         self.localURL = [NSURL fileURLWithPath:path];
+        NSLog(@"download to localURL=%@", self.localURL);
         self.gotImage = YES;
-        NSLog(@"localURL=%@", self.localURL);
     }
     else{
         self.gotImage = NO;
@@ -93,4 +93,9 @@
     return self.localURL;
 }
 
+- (id)previewItemDisplayState
+{
+    NSLog(@"previewItemDisplayState");
+    return nil;
+}
 @end

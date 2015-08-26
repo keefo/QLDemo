@@ -188,11 +188,12 @@ static void *DownloadKVOContext = &DownloadKVOContext;
 
         if (item.gotImage) {
             if (preview_item == item) {
-                NSLog(@"gotImage ok reload");
-                [self.previewPanel reloadData];
+                NSLog(@"gotImage ok, reload QL panel");
+                [self.previewPanel reloadData];//query new url
+                [self.previewPanel refreshCurrentPreviewItem];//recompute the preview of the currently previewed item.
             }
             else{
-                NSLog(@"gotImage ok not reload");
+                NSLog(@"gotImage erro, do not reload");
             }
         }
         else{
